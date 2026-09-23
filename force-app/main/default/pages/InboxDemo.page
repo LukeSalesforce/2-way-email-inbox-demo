@@ -1,0 +1,125 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" cache="false">
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inbox &mdash; {{PROSPECT_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&amp;family=Roboto:wght@400;500;700&amp;family=Karla:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="{!URLFOR($Resource.InboxAssets, 'styles.css')}" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      </button>
+      <div class="logo">
+        <span class="logo-mail">M</span>
+        <span class="logo-text">Mail</span>
+      </div>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#5f6368" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <input type="text" placeholder="Search mail" />
+    </div>
+    <div class="topbar-right">
+      <span class="account-chip">{{PROSPECT_INITIALS}}</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <button class="compose-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        Compose
+      </button>
+      <nav class="nav">
+        <a class="nav-item active" href="#">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22 4H2v16h20V4zM4 8l8 5 8-5v2l-8 5-8-5V8z"/></svg>
+          <span>Inbox</span>
+          <span class="count">1</span>
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2l-1.45 1.32L4 9.5V20h16V9.5l-6.55-6.18z"/></svg>
+          <span>Starred</span>
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+          <span>Sent</span>
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 8l9 6 9-6V6l-9 6-9-6v2z"/></svg>
+          <span>Drafts</span>
+        </a>
+      </nav>
+      <button class="reset-btn" id="reset-btn" title="Delete all Cases and EmailMessages tied to this demo thread">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        Reset Demo Data
+      </button>
+    </aside>
+
+    <main class="content" id="content">
+      <div class="thread" id="thread">
+        <div class="thread-header">
+          <h1 id="thread-subject">{{SUBJECT_LINE}}</h1>
+          <div class="labels"><span class="label">Inbox</span></div>
+        </div>
+
+        <div class="messages" id="messages">
+          <article class="message">
+            <header class="msg-header">
+              <div class="avatar avatar-agent">N</div>
+              <div class="msg-meta">
+                <div class="msg-from">
+                  <strong>{{AGENT_NAME}}</strong>
+                  <span class="from-email">&lt;{{AGENT_EMAIL}}&gt;</span>
+                </div>
+                <div class="msg-to">to me</div>
+              </div>
+              <div class="msg-time" id="initial-time">just now</div>
+            </header>
+            <div class="msg-body" id="initial-body">
+              {{INITIAL_EMAIL_HTML}}
+            </div>
+          </article>
+
+          <div id="rep-replies"></div>
+        </div>
+
+        <section class="reply-box" id="reply-box">
+          <div class="reply-header">
+            <span class="reply-icon">&#x21A9;</span>
+            <span>Reply to {{AGENT_NAME}}</span>
+            <button class="refresh-btn" id="refresh-btn" title="Check for replies">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.74 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+              Check for reply
+            </button>
+          </div>
+          <textarea id="reply-body" placeholder="Type your reply..."></textarea>
+          <div class="reply-actions">
+            <button class="send-btn" id="send-btn">
+              Send
+            </button>
+            <span class="status" id="status"></span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="case-footer" id="case-footer" hidden="hidden">
+    <span class="case-footer-label">Case<span id="case-footer-plural">:</span></span>
+    <span id="case-footer-list"></span>
+  </div>
+
+  <script>
+    window.__SF_SESSION_ID = '{!$Api.Session_ID}';
+    window.__SF_INSTANCE_URL = '{!LEFT($Api.Partner_Server_URL_260, FIND("/services", $Api.Partner_Server_URL_260))}';
+    window.__SF_SITES_BASE = '{!$Site.BaseUrl}';
+  </script>
+  <script src="{!URLFOR($Resource.InboxAssets, 'app.js')}"></script>
+</body>
+</html>
+</apex:page>

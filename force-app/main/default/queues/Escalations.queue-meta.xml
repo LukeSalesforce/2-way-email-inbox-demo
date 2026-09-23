@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesSendEmailToMembers>true</doesSendEmailToMembers>
+    <email>escalations@example.invalid</email>
+    <fullName>{{ESCALATION_QUEUE}}</fullName>
+    <name>{{COMPANY_NAME}} Escalations</name>
+    <queueMembers>
+        <users>
+            <user>{{ORG_ADMIN_EMAIL}}</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>
